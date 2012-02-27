@@ -556,18 +556,17 @@ public class App {
     		else{
     			//lazy create named camera
     			camera = cameraMap.get(newName);
-    			if(camera != null){  //resume if was paused
-    			//	camera.start();
-    			}
-    			else{//load if it doesn't exist already
+    			if(camera == null){ //load if it doesn't exist already
     				if(cameraName.equals(DEFAULT_CAMERA)){
-    	        		camera = new GSCapture(this, 320, 240, 15);
+    	        		camera = new GSCapture(this, 640, 480, 30);
     				}
     				else{
-    	        		camera = new GSCapture(this, 320, 240, newName, 15);    			    					
+    	        		camera = new GSCapture(this, 640, 480, newName, 30);
     				}
     				cameraMap.put(newName, camera);
     			}
+    			//start (or resume if was paused)
+    			camera.start();
     		}
     	}
     	
