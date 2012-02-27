@@ -1,0 +1,46 @@
+body{
+	background-color: grey;
+}
+
+body *{
+	font-size:8pt;
+}
+
+.graphcontainer {
+	width:100%;
+	//max-width:256px;
+	overflow:auto;
+	background-color: white;
+}
+
+.graphcontainer .tabs{
+	min-height:100%;
+}
+
+.button{
+	display:block;
+	float:right;
+}
+
+.button.addballoon, .button.editmode, .button.refresh{
+	margin-top:0.5em;
+	margin-right:0.5em;
+}
+
+table.properties td.header{
+	padding-top:1em;
+}
+
+table.properties tr.file{
+	width:256px;
+	max-width:256px;
+}
+
+table.properties input, table.properties textarea {
+	width:110px;
+}
+
+.hidden {
+	display:none;
+}
+}

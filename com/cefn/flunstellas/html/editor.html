@@ -1,0 +1,242 @@
+<html>
+<head>
+
+	<!-- Library imports -->
+	<script src="lib/jquery-1.7.js" ></script>
+	<script src="lib/jquery-ui/js/jquery-ui-1.8.17.custom.min.js" ></script>
+	<script src="lib/jquery.media.js" ></script>
+	<script src="lib/json2.js" ></script>
+
+	<!--  Style for UI -->
+	<link type="text/css" href="lib/jquery-ui/css/sunny/jquery.ui.all.css" rel="stylesheet" />
+	<link rel="stylesheet" type="text/css" href="editor.css" ></link>
+
+	<!--  Scripting of UI -->
+	<script src="editor.js" ></script>
+
+</head>
+<body>
+<div class="graphcontainer">
+	<div class="tabs">
+		<div>
+		<a class="button editmode ui-state-default ui-corner-all"><span class="ui-icon ui-icon-wrench" /></a>
+		<a class="button refresh ui-state-default ui-corner-all"><span class="ui-icon ui-icon-refresh" /></a>
+		<a class="button addballoon ui-state-default ui-corner-all"><span class="ui-icon ui-icon-plusthick" /></a>
+		<ul>
+			<li><a href="#graphtab">Graph</a></li>
+			<li><a href="#balloonstab">Balloons</a></li>
+			<li><a href="#viewertab">Viewer</a></li>
+		</ul>
+		</div>
+										
+					<!-- 
+		<table>
+			<tr>
+				<td>		
+				</td>
+				<td><span class="modetoggle ui-icon ui-icon-wrench" /></td>
+			</tr>
+		</table>
+					 -->
+				
+		<div id="graphtab">
+			<div class="viewer">
+				<h1>				
+					<span name="graph.title">Untitled</span> 
+					by 
+					<span name="graph.author.title" >Unknown</span>
+				</h1>
+				<p>
+				<span name="graph.description">No description</span>
+				</p>				
+			</div>
+			<div class="editor">
+				<table class="properties">
+					<tr>
+						<td colspan="2" class="header"><h1>Properties</h1></td>
+					</tr>
+					<tr>
+						<td>Title</td><td><input type="text" name="graph.title"/></td>
+					</tr>
+					<tr>
+						<td>Description</td><td><textarea name="graph.description"></textarea></td>
+					</tr>
+					<tr>
+						<td>Author</td><td><input type="text" name="graph.author.title"/></td>
+					</tr>
+					<tr>
+						<td colspan="2" class="header"><h1>Axis Labels</h1></td>
+					</tr>
+					<tr>
+						<td>Radius</td><td><input type="text" name="graph.radiusLabel"/></td>
+					</tr>
+					<tr>
+						<td>Height</td><td><input type="text" name="graph.heightLabel"/></td>
+					</tr>
+					<tr>
+						<td>Angle</td><td><input type="text" name="graph.angleLabel"/></td>
+					</tr>
+				</table>
+			</div>
+		</div>
+		<div id="balloonstab">
+			<div class="accordion" id="balloonsholder">
+			</div>			
+		</div>
+		<div id="viewertab">
+			<table class="properties">
+				<tr>
+					<td colspan="2" class="header"><h1>Properties</h1></td>
+				</tr>
+				<tr>
+					<td>Tilt</td><td><input type="text" name="viewer.XAngle"/></td>
+				</tr>
+				<tr>
+					<td></td><td><div class="slider" name="viewer.XAngle"></div></td>
+				</tr>
+				<tr>
+					<td>Spin</td><td><input type="text" name="viewer.YAngle"/></td>
+				</tr>
+				<tr>
+					<td></td><td><div class="slider" name="viewer.YAngle"></div></td>
+				</tr>
+				<tr>
+					<td>Distance Back</td><td><input type="text" name="viewer.ZOffset"/></td>
+				</tr>
+				<tr>
+					<td></td><td><div class="slider" name="viewer.ZOffset"></div></td>
+				</tr>
+				<tr>
+					<td>Floor Height</td><td><input type="text" name="viewer.YOffset"/></td>
+				</tr>
+				<tr>
+					<td></td><td><div class="slider" name="viewer.YOffset"></div></td>
+				</tr>
+				<tr>
+					<td>Camera Selection</td><td>
+						<select name="viewer.cameraName" >
+							<!-- 
+							<option value="null">None</option>
+							<option value="default">Default</option>
+							 -->
+						</select></td>
+				</tr>
+				<tr>
+					<td>Camera Override</td><td><input type="text" name="viewer.cameraName"/></td>
+				</tr>
+			</table>
+		</div>
+	</div>
+	<div class="hidden">
+		<div id="balloonstemplate">
+			<h3><a class="header" href="#"><span name="title">Untitled Balloon</span></a></h3>
+			<div>
+				<div class="viewer">
+					<p><span name="description"></span></p>
+				</div>
+				<div class="editor">
+					<table class="properties">
+						<tr>
+							<td colspan="2" class="header"><a class="button removeballoon ui-state-default ui-corner-all"><span class="ui-icon ui-icon-trash" /></a><h1>Properties</h1></td>
+						</tr>
+						<tr>
+							<td>Title</td><td><input type="text" name="title"/></td>
+						</tr>
+						<tr>
+							<td>Description</td><td><textarea name="description"></textarea></td>
+						</tr>
+						<tr>
+							<td>Model</td><td><input class="file" type="text" name="modelPath"/></td>
+						</tr>
+						<tr>
+							<td>Media</td><td><input class="file" type="text" name="mediaPath"/></td>
+						</tr>
+						<tr>
+							<td colspan="2" class="header"><h1>Center</h1></td>
+						</tr>
+						<tr>
+							<td>Height</td>
+							<td><input type="text" name="center.height"/></td>
+						</tr>
+						<tr>
+							<td></td><td><div class="slider" name="center.height" ></div></td>
+						</tr>
+						<tr>
+							<td>Radius</td>
+							<td><input type="text" name="center.radius"/></td>
+						</tr>
+						<tr>
+							<td></td><td><div class="slider" name="center.radius"></div></td>
+						</tr>
+						<tr>
+							<td>Angle</td>
+							<td><input type="text" name="center.angle"/></td>
+						</tr>
+						<tr>
+							<td></td><td><div class="slider" name="center.angle"></div></td>
+						</tr>
+						<tr>
+							<td>Scale</td>
+							<td><input type="text" name="scale"/></td>
+						</tr>
+						<tr>
+							<td></td><td><div class="slider" name="scale"></div></td>
+						</tr>
+						<tr>
+							<td colspan="2" class="header"><h1>Rotation</h1></td>
+						</tr>
+						<tr>
+							<td>X</td>
+							<td><input type="text" name="rotation.x"/></td>
+						</tr>
+						<tr>
+							<td></td><td><div class="slider" name="rotation.x"></div></td>
+						</tr>
+						<tr>
+							<td>Y</td>
+							<td><input type="text" name="rotation.y"/></td>
+						</tr>
+						<tr>
+							<td></td><td><div class="slider" name="rotation.y"></div></td>
+						</tr>
+						<tr>
+							<td>Z</td>
+							<td><input type="text" name="rotation.z"/></td>
+						</tr>
+						<tr>
+							<td></td><td><div class="slider" name="rotation.z"></div></td>
+						</tr>
+						<!-- 
+						<tr>
+							<td colspan="2" class="header"><h1>Scale</h1></td>
+						</tr>
+						<tr>
+							<td>X</td>
+							<td><input type="text" name="scale.x"/></td>
+						</tr>
+						<tr>
+							<td></td><td><div class="slider" name="scale.x"></div></td>
+						</tr>
+						<tr>
+							<td>Y</td>
+							<td><input type="text" name="scale.y"/></td>
+						</tr>
+						<tr>
+							<td></td><td><div class="slider" name="scale.y"></div></td>
+						</tr>
+						<tr>
+							<td>Z</td>
+							<td><input type="text" name="scale.z"/></td>
+						</tr>
+						<tr>
+							<td></td><td><div class="slider" name="scale.z"></div></td>
+						</tr>
+						 -->
+					</table>								
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+</body>
+</html>
