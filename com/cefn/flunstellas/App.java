@@ -20,6 +20,7 @@ import org.codehaus.jackson.map.SerializationConfig.Feature;
 import org.codehaus.jackson.type.TypeReference;
 
 import codeanticode.gsvideo.GSCapture;
+import codeanticode.gsvideo.GSVideo;
 
 import com.cefn.flunstellas.impl.BasicAuthor;
 import com.cefn.flunstellas.impl.BasicGraph;
@@ -50,7 +51,13 @@ public class App {
     	String[] macroNames = new String[]{NULL_CAMERA,DEFAULT_CAMERA};
    		String os = System.getProperty("os.name");		
  	    if(os.startsWith("Mac")){
-	        //GSVideo.localGStreamerPath = "native_lib/macosx";
+ 	    	try{
+ 	 	    	GSVideo.class.getDeclaredField("localGStreamerPath").set(null, "jars/macosx/gstreamer/macosx32"); 	    		
+ 	    	}
+ 	    	catch(Exception e){
+ 	    		if(e instanceof RuntimeException){ throw (RuntimeException)e;} 
+ 	    		else{ e.printStackTrace();}
+ 	    	}
  	    	CAMERA_NAMES = ArrayUtils.addAll(macroNames, new String[]{
  	    			//not known what Mac cameras are called
  	    	});
