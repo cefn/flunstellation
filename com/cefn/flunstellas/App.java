@@ -28,6 +28,7 @@ import com.cefn.flunstellas.impl.ModelMediaBalloon;
 
 import processing.core.PApplet;
 import processing.core.PFont;
+import processing.core.PImage;
 
 import chrriis.common.UIUtils;
 import chrriis.common.WebServer;
@@ -492,6 +493,7 @@ public class App {
     	GSCapture camera;
     	boolean cameraFlipped;
     	
+    	PImage arrowImage = null;
     	PFont labelFont = null;
     	
     	protected ProcessingViewer(Dimension size){
@@ -542,6 +544,8 @@ public class App {
   		  
   		  //trigger load of default camera configuration
   		  setCameraName(DEFAULT_CAMERA_NAME); 
+  		  
+  		  arrowImage = loadImage("arrow.png");
   		    		  
     	}
     	
@@ -666,7 +670,10 @@ public class App {
     	}
     	
     	public void drawGraph(Graph graph, PApplet applet) {
-			
+			if(labelFont == null){
+				labelFont = applet.createFont("Arial", 32);
+			}
+    		
     		//draw circles
     		applet.pushMatrix();
     		applet.rotateX(PApplet.PI * 0.5f);
@@ -704,22 +711,54 @@ public class App {
     			//compensating for viewer spin
     			//and balloon scale and spin
     			if(balloon.getShowLabel() && balloon.getTitle() != null){
-    				if(labelFont == null){
-    					labelFont = applet.createFont("Arial", 32);
-    				}
     				applet.pushMatrix();
     				applet.translate(0, -0.03f * balloon.getScale(),0);
-    				applet.textFont(labelFont);
-    				applet.textAlign(PApplet.CENTER);
     				applet.rotateY(- PApplet.PI / 180 * (getYAngle() + balloon.getCenter().getAngle()));
     				applet.scale(0.001f);
+    				applet.textFont(labelFont);
+    				applet.textAlign(PApplet.CENTER, PApplet.TOP);
     				applet.text(balloon.getTitle(), 0,0,0); //draw text above
     				applet.popMatrix();
     			}
-
-    			
     			
     			applet.popMatrix();
+    		}
+    		
+    		float arrowTargetLength = 0.48f;
+    		
+    		//draw labels out from origin, angling
+    		if(graph.getRadiusLabel() != null){
+        		applet.pushMatrix();
+        		float radiusAxisAngle = -15;
+        		applet.rotateX(PApplet.PI / 180 * 90);
+        		applet.rotateZ(PApplet.PI / 180 * radiusAxisAngle);
+        		float arrowAspect = arrowImage.width != 0 ? (float)arrowImage.height / (float)arrowImage.width: 1f;
+        		applet.image(arrowImage, 0, 0, arrowTargetLength, arrowTargetLength * -arrowAspect);
+    			applet.translate(0.5f, 0f);
+    			applet.rotateX(PApplet.PI / 180 * -90);
+    			applet.rotateY(PApplet.PI / 180 * (90 + radiusAxisAngle));
+				applet.scale(0.001f);
+    			applet.textFont(labelFont);
+    			applet.textAlign(PApplet.CENTER, PApplet.TOP);
+    			applet.text(graph.getRadiusLabel(), 0,0,0); //draw text above
+        		applet.popMatrix();    			
+    		}
+
+    		//draw labels out from origin, angling
+    		if(graph.getHeightLabel() != null){
+        		applet.pushMatrix();
+        		float heightAxisAngle = -90;
+        		float arrowAspect = arrowImage.width != 0 ? (float)arrowImage.height / (float)arrowImage.width: 1f;
+        		applet.rotateX(PApplet.PI/180 * heightAxisAngle);
+        		applet.rotateY(PApplet.PI/180 * 90);
+        		applet.image(arrowImage, 0, 0, arrowTargetLength, arrowTargetLength * -arrowAspect);
+    			applet.translate(0.5f, 0f);
+				applet.scale(0.001f);
+    			applet.textFont(labelFont);
+    			applet.textAlign(PApplet.CENTER);
+    			applet.rotateZ(PApplet.PI/180 * 90);
+    			applet.text(graph.getHeightLabel(), 0,0,0); //draw text above
+        		applet.popMatrix();    			
     		}
     		
     	}
